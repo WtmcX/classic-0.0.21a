@@ -3,7 +3,6 @@ package com.mojang.minecraft.gui;
 import com.mojang.minecraft.ChatLine;
 import com.mojang.minecraft.Minecraft;
 import com.mojang.minecraft.level.tile.Tile;
-import com.mojang.minecraft.net.ConnectionManager;
 import com.mojang.minecraft.net.NetworkPlayer;
 import com.mojang.minecraft.player.Inventory;
 import com.mojang.minecraft.renderer.Tesselator;
@@ -92,17 +91,10 @@ public final class InGameHud {
 		var3.vertex((float)(var7 - 4), (float)(var11 + 1), 0.0F);
 		var3.vertex((float)(var7 + 5), (float)(var11 + 1), 0.0F);
 		var3.end();
-		if(Keyboard.isKeyDown(Keyboard.KEY_TAB) && this.minecraft.connectionManager != null && this.minecraft.connectionManager.isConnected()) {
-			ConnectionManager var8 = this.minecraft.connectionManager;
+		if(Keyboard.isKeyDown(Keyboard.KEY_TAB)) {
 			ArrayList var12 = new ArrayList();
-			var12.add(var8.minecraft.user.name);
-			Iterator var9 = var8.players.values().iterator();
 
-			while(var9.hasNext()) {
-				NetworkPlayer var15 = (NetworkPlayer)var9.next();
-				var12.add(var15.name);
-			}
-
+			
 			ArrayList var10 = var12;
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

@@ -67,7 +67,14 @@ public class Textures {
 		GL11.glTexImage2D(RealOpenGLEnums.GL_TEXTURE_2D, 0, RealOpenGLEnums.GL_RGBA, var3, var4, 0, RealOpenGLEnums.GL_RGBA, RealOpenGLEnums.GL_UNSIGNED_BYTE, (ByteBuffer)this.textureBuffer);
 		return var2;
 	}
-
+	public void bindTexture(int i) {
+		if (i < 0) {
+			return;
+		} else {
+			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, i);
+			return;
+		}
+	}
 	public final void registerTextureFX(TextureFX var1) {
 		this.textureList.add(var1);
 		var1.onTick();

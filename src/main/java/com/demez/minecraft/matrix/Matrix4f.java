@@ -1,4 +1,4 @@
-package com.demez.minecraft.Client;
+package com.demez.minecraft.matrix;
 
 import java.nio.FloatBuffer;
 

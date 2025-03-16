@@ -1,4 +1,5 @@
-package net.PeytonPlayz585.opengl;
+package com.demez.minecraft.misc;
+
 
 public class MinecraftImageData {
 

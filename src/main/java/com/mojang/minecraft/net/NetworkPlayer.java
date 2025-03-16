@@ -138,7 +138,7 @@ public class NetworkPlayer extends Entity {
 		float var3 = this.oRun + (this.run - this.oRun) * var2;
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		if(this.newTexture != null) {
-			this.skin = var1.addTexture(this.newTexture);
+			//this.skin = var1.addTexture(this.newTexture);
 			this.newTexture = null;
 		}
 

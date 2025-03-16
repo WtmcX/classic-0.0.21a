@@ -1,6 +1,6 @@
 package com.mojang.minecraft;
 
-import com.mojang.comm.SocketConnection;
+
 import com.mojang.minecraft.character.Vec3;
 import com.mojang.minecraft.character.Zombie;
 import com.mojang.minecraft.character.ZombieModel;
@@ -16,7 +16,6 @@ import com.mojang.minecraft.level.LevelIO;
 import com.mojang.minecraft.level.levelgen.LevelGen;
 import com.mojang.minecraft.level.liquid.Liquid;
 import com.mojang.minecraft.level.tile.Tile;
-import com.mojang.minecraft.net.ConnectionManager;
 import com.mojang.minecraft.net.Packet;
 import com.mojang.minecraft.particle.Particle;
 import com.mojang.minecraft.particle.ParticleEngine;
@@ -81,7 +80,6 @@ public final class Minecraft implements Runnable {
 	public String loadMapUser = null;
 	public int loadMapId = 0;
 	private InGameHud hud;
-	public ConnectionManager connectionManager;
 	String server = null;
 	int port = 0;
 	private float fogColorRed = 0.5F;
@@ -144,7 +142,6 @@ public final class Minecraft implements Runnable {
 			System.out.println("########## GL ERROR ##########");
 			System.out.println("@ " + var0);
 			System.out.println(var1 + ": " + var2);
-			System.exit(0);
 		}
 
 	}
@@ -223,7 +220,6 @@ public final class Minecraft implements Runnable {
 			var8.clear().limit(256);
 			GL11.glViewport(0, 0, this.width, this.height);
 			if(this.server != null && this.user != null) {
-				this.connectionManager = new ConnectionManager(this, this.server, this.port, this.user.name, this.user.mpPass);
 				this.level = null;
 			} else {
 				boolean var9 = false;
@@ -458,9 +454,7 @@ public final class Minecraft implements Runnable {
 				if(var4 != Tile.unbreakable || this.player.userType >= 100) {
 					boolean var8 = this.level.netSetTile(var1, var2, var3, 0);
 					if(var4 != null && var8) {
-						if(this.isMultiplayer()) {
-							this.connectionManager.sendBlockChange(var1, var2, var3, this.editMode, this.player.inventory.getSelected());
-						}
+						
 
 						var4.destroy(this.level, var1, var2, var3, this.particleEngine);
 					}
@@ -473,10 +467,7 @@ public final class Minecraft implements Runnable {
 				if(var4 == null || var4 == Tile.water || var4 == Tile.calmWater || var4 == Tile.lava || var4 == Tile.calmLava) {
 					AABB var7 = Tile.tiles[var5].getTileAABB(var1, var2, var3);
 					if(var7 == null || (this.player.bb.intersects(var7) ? false : this.level.isFree(var7))) {
-						if(this.isMultiplayer()) {
-							this.connectionManager.sendBlockChange(var1, var2, var3, this.editMode, var5);
-						}
-
+						
 						this.level.netSetTile(var1, var2, var3, this.player.inventory.getSelected());
 						Tile.tiles[var5].onBlockAdded(this.level, var1, var2, var3);
 					}
@@ -507,39 +498,39 @@ public final class Minecraft implements Runnable {
 		}
 
 		int var5;
-		if(this.connectionManager != null) {
-			if(!this.connectionManager.isConnected()) {
-				this.beginLevelLoading("Connecting..");
-				this.setLoadingProgress(0);
-			} else {
-				ConnectionManager var9 = this.connectionManager;
-				if(var9.processData) {
-					SocketConnection var12 = var9.connection;
-					if(var12.connected) {
-						try {
-							var9.connection.processData();
-						} catch (Exception var7) {
-							var9.minecraft.setScreen(new ErrorScreen("Disconnected!", "You\'ve lost connection to the server"));
-							var9.minecraft.hideGui = false;
-							var7.printStackTrace();
-							var9.connection.disconnect();
-							var9.minecraft.connectionManager = null;
-						}
-					}
-				}
-
-				Player var14 = this.player;
-				var9 = this.connectionManager;
-				if(var9.connected) {
-					int var13 = (int)(var14.x * 32.0F);
-					int var4 = (int)(var14.y * 32.0F);
-					var5 = (int)(var14.z * 32.0F);
-					int var6 = (int)(var14.yRot * 256.0F / 360.0F) & 255;
-					var2 = (int)(var14.xRot * 256.0F / 360.0F) & 255;
-					var9.connection.sendPacket(Packet.PLAYER_TELEPORT, new Object[]{Integer.valueOf(-1), Integer.valueOf(var13), Integer.valueOf(var4), Integer.valueOf(var5), Integer.valueOf(var6), Integer.valueOf(var2)});
-				}
-			}
-		}
+//		if(this.connectionManager != null) {
+//			if(!this.connectionManager.isConnected()) {
+//				this.beginLevelLoading("Connecting..");
+//				this.setLoadingProgress(0);
+//			} else {
+//				ConnectionManager var9 = this.connectionManager;
+//				if(var9.processData) {
+//					SocketConnection var12 = var9.connection;
+//					if(var12.connected) {
+//						try {
+//							var9.connection.processData();
+//						} catch (Exception var7) {
+//							var9.minecraft.setScreen(new ErrorScreen("Disconnected!", "You\'ve lost connection to the server"));
+//							var9.minecraft.hideGui = false;
+//							var7.printStackTrace();
+//							var9.connection.disconnect();
+//							var9.minecraft.connectionManager = null;
+//						}
+//					}
+//				}
+//
+//				Player var14 = this.player;
+//				var9 = this.connectionManager;
+//				if(var9.connected) {
+//					int var13 = (int)(var14.x * 32.0F);
+//					int var4 = (int)(var14.y * 32.0F);
+//					var5 = (int)(var14.z * 32.0F);
+//					int var6 = (int)(var14.yRot * 256.0F / 360.0F) & 255;
+//					var2 = (int)(var14.xRot * 256.0F / 360.0F) & 255;
+//					var9.connection.sendPacket(Packet.PLAYER_TELEPORT, new Object[]{Integer.valueOf(-1), Integer.valueOf(var13), Integer.valueOf(var4), Integer.valueOf(var5), Integer.valueOf(var6), Integer.valueOf(var2)});
+//				}
+//			}
+//		}
 
 		LevelRenderer var16;
 		if(this.screen == null || this.screen.allowUserInput) {
@@ -579,7 +570,7 @@ public final class Minecraft implements Runnable {
 									this.player.resetPos();
 								}
 
-								if(Keyboard.getEventKey() == Keyboard.KEY_G && this.connectionManager == null && this.level.entities.size() < 256) {
+								if(Keyboard.getEventKey() == Keyboard.KEY_G) {
 									this.level.entities.add(new Zombie(this.level, this.player.x, this.player.y, this.player.z));
 								}
 
@@ -588,7 +579,7 @@ public final class Minecraft implements Runnable {
 								}
 
 
-								if(Keyboard.getEventKey() == Keyboard.KEY_T && this.connectionManager != null && this.connectionManager.isConnected()) {
+								if(Keyboard.getEventKey() == Keyboard.KEY_T ) {
 									this.player.releaseAllKeys();
 									this.setScreen(new ChatScreen());
 								}
@@ -692,9 +683,7 @@ public final class Minecraft implements Runnable {
 			var16 = this.levelRenderer;
 			++var16.cloudTickCounter;
 			this.level.tickEntities();
-			if(!this.isMultiplayer()) {
-				this.level.tick();
-			}
+		
 
 			ParticleEngine var19 = this.particleEngine;
 
@@ -709,10 +698,6 @@ public final class Minecraft implements Runnable {
 			this.player.tick();
 		}
 
-	}
-
-	private boolean isMultiplayer() {
-		return this.connectionManager != null;
 	}
 
 	private void render(float var1) {
