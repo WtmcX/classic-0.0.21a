@@ -30,7 +30,7 @@ This project is a port of **Minecraft c0.0.21a** to the browser using [TeaVM](ht
    - Click general and Exsisting Java Project
    - Select the folder 'desktopRuntime/EclipseProject'
 
-3. Serve the generated files using a local server:
+3. Run the desktop runtime:
    - RClick eaglerDebugRuntime.launch and click Run as and click the first one.
 
 ## Development
