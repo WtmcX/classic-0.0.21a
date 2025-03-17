@@ -18,30 +18,28 @@ This project is a port of **Minecraft c0.0.21a** to the browser using [TeaVM](ht
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/minecraft-teavm-port.git
-   cd minecraft-teavm-port
+   git clone https://github.com/WtmcX/classic-0.0.21a.git
+   cd classic-0.0.21a
    ```
 
-2. Build the project using TeaVM:
-   ```bash
-   ./gradlew build
-   ```
+2. Open the project using Eclipse IDE:
+   - Open eclipse ide
+   - Open a folder / create
+   - Open it on eclipse
+   - Click import project
+   - Click general and Exsisting Java Project
+   - Select the folder 'desktopRuntime/EclipseProject'
 
 3. Serve the generated files using a local server:
-   ```bash
-   python -m http.server 8080
-   ```
-
-4. Open your browser and navigate to:
-   ```
-   http://localhost:8080/
-   ```
+   - RClick eaglerDebugRuntime.launch and click Run as and click the first one.
 
 ## Development
 
+Still going...
+
 ### Prerequisites
 
-- Java Development Kit (JDK) 8 or later
+- Java Development Kit (JDK) 11 or later
 - Gradle build tool
 - TeaVM (already included as a dependency)
 
@@ -49,13 +47,13 @@ This project is a port of **Minecraft c0.0.21a** to the browser using [TeaVM](ht
 
 To rebuild the project and generate the web files:
 ```bash
-./gradlew teavm
+./gradlew generateJavaScript
 ```
-
+And open MakeOfflineDownload.bat
 ### Directory Structure
 
-- `src/main/java`: Source code for Minecraft c0.0.21a.
-- `build/teavm`: Output directory containing the transpiled JavaScript and web resources.
+- `src/game/java`: Source code for Minecraft c0.0.21a.
+- `javascript`: Output directory containing the transpiled JavaScript and web resources.
 
 ## Credits
 
